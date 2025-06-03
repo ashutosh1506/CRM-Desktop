@@ -1,3 +1,17 @@
+# .env for frontend {
+
+VITE_GOOGLE_CLIENT_ID=509612499098-ekoh27o3g2l7144fa8lag2roqjh8aoi8.apps.googleusercontent.com
+VITE_API_URL=http://localhost:5000
+}
+
+# .env for backend {
+
+MONGODB_URI=mongodb+srv://gaashu001:ashu12345@cluster0.q1u6msr.mongodb.net/
+JWT_SECRET=d7dee1f704ab0d7137067b8a1ae765d341b82b7bf5c3ece059fa9818206fefc6
+GOOGLE_CLIENT_ID=509612499098-ekoh27o3g2l7144fa8lag2roqjh8aoi8.apps.googleusercontent.com
+PORT=5000
+}
+
 # Xeno CRM Platform
 
 A Mini CRM Platform. This application enables customer segmentation, personalized campaign delivery, and campaign tracking.
@@ -110,8 +124,6 @@ xeno-crm-platform/
    npm start
    \`\`\`
 
-
-
 ## API Endpoints
 
 ### Authentication
@@ -173,4 +185,3 @@ xeno-crm-platform/
 - 90% success rate as specified
 - Asynchronous message processing
 - Real-time status updates
-
