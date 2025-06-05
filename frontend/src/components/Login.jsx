@@ -18,8 +18,6 @@ export default function Login() {
 
     script.onload = () => {
       try {
-        console.log("Google Client ID:", import.meta.env.VITE_GOOGLE_CLIENT_ID);
-
         window.google.accounts.id.initialize({
           client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
           callback: handleCredentialResponse,
@@ -65,7 +63,6 @@ export default function Login() {
 
   const handleCredentialResponse = async (response) => {
     try {
-      console.log("Google auth response received");
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/api/auth/google`,
         {
