@@ -35,8 +35,6 @@ export default function Login() {
           }
         );
 
-        // Don't call prompt() method directly to avoid deprecated behavior
-        // Let the button click handle the authentication flow
       } catch (err) {
         console.error("Google Sign-In initialization error:", err);
         setAuthError("Failed to initialize Google Sign-In");
@@ -89,7 +87,7 @@ export default function Login() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Welcome to Xeno CRM
+            Welcome to CRMify
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Sign in to access your customer relationship management platform
