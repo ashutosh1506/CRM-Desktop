@@ -6,7 +6,7 @@ import React from "react";
 
 export default function Login() {
   const { user, login } = useAuth();
-  const [fedCmError, setFedCmError] = useState(false);
+  const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
     // Load Google OAuth script
@@ -21,9 +21,8 @@ export default function Login() {
         window.google.accounts.id.initialize({
           client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
           callback: handleCredentialResponse,
-          // Try with these improved settings
-          itp_support: true,
-          use_fedcm_for_prompt: true,
+          // Use FedCM for authentication
+          use_fedcm: true,
         });
 
         window.google.accounts.id.renderButton(
@@ -36,20 +35,11 @@ export default function Login() {
           }
         );
 
-        // Add auto prompt with error handling
-        window.google.accounts.id.prompt((notification) => {
-          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-            console.log(
-              "FedCM prompt failed:",
-              notification.getNotDisplayedReason() ||
-                notification.getSkippedReason()
-            );
-            setFedCmError(true);
-          }
-        });
+        // Don't call prompt() method directly to avoid deprecated behavior
+        // Let the button click handle the authentication flow
       } catch (err) {
         console.error("Google Sign-In initialization error:", err);
-        setFedCmError(true);
+        setAuthError("Failed to initialize Google Sign-In");
       }
     };
 
@@ -81,10 +71,12 @@ export default function Login() {
         toast.success("Login successful!");
       } else {
         toast.error("Login failed");
+        setAuthError("Authentication failed. Please try again.");
       }
     } catch (error) {
       console.error("Auth error:", error);
       toast.error("Login failed");
+      setAuthError("Authentication error. Please try again later.");
     }
   };
 
@@ -104,7 +96,7 @@ export default function Login() {
           </p>
         </div>
         <div className="mt-8 space-y-6">
-          {fedCmError ? (
+          {authError && (
             <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-4">
               <div className="flex">
                 <div className="flex-shrink-0">
@@ -123,24 +115,26 @@ export default function Login() {
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-yellow-800">
-                    Third-party sign-in has been disabled
+                    Authentication Error
                   </h3>
                   <div className="mt-2 text-sm text-yellow-700">
-                    <p>To enable Google Sign-In, please:</p>
-                    <ol className="list-decimal list-inside mt-1 space-y-1">
-                      <li>Look for the icon in the URL bar</li>
-                      <li>Click it and select "Manage third-party sign-in"</li>
-                      <li>Enable Google sign-in for this site</li>
-                      <li>Refresh the page</li>
-                    </ol>
+                    <p>{authError}</p>
+                    <p className="mt-1">
+                      If you're seeing issues with Google Sign-In, please make
+                      sure third-party cookies are enabled in your browser
+                      settings.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          ) : null}
+          )}
 
-          <div className="flex justify-center">
-            <div id="google-signin-button"></div>
+          <div className="flex flex-col items-center">
+            <div id="google-signin-button" className="mb-4"></div>
+            <p className="text-sm text-gray-500 text-center mt-4">
+              Click the button above to sign in with your Google account
+            </p>
           </div>
         </div>
       </div>
